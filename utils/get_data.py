@@ -56,12 +56,12 @@ def build_model(path):
     N = np.reshape(N, newshape=(len(N), 1))
     Y = np.reshape(Y, newshape=(len(Y), 1))
 
-    A = np.random.uniform(low=0, high=2, size=(len(X), len(X)))
-    B = np.random.uniform(low=0, high=2, size=(len(X), len(U)))
-    C = np.random.uniform(low=0, high=2, size=(len(Y), len(X)))
-    D = np.random.uniform(low=0, high=2, size=(len(Y), len(U)))
-    E = np.random.uniform(low=0, high=2, size=(len(X), len(N)))
-    F = np.random.uniform(low=0, high=2, size=(len(Y), len(N)))
+    A = np.random.uniform(low=-0.5, high=0.5, size=(len(X), len(X)))
+    B = np.random.uniform(low=-0.5, high=0.5, size=(len(X), len(U)))
+    C = np.random.uniform(low=-0.5, high=0.5, size=(len(Y), len(X)))
+    D = np.random.uniform(low=-0.5, high=0.5, size=(len(Y), len(U)))
+    E = np.random.uniform(low=-0.5, high=0.5, size=(len(X), len(N)))
+    F = np.random.uniform(low=-0.5, high=0.5, size=(len(Y), len(N)))
 
     return A, B, C, D, E, F, X, U, N, Y, T
 
