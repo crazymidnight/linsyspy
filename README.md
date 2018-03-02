@@ -1,7 +1,7 @@
 # linsyspy
 ### Dynamic linear system modeling project
 
-Python interpreter version 3.6 and or higher and packages from *requirements.txt*
+Python interpreter version 3.6 or higher and packages from *requirements.txt*
 
 ### Instruction to run:
 1. Install packages: 
