@@ -1,8 +1,16 @@
 # linsyspy
-### Проект моделирования линейной динамической системы
+### Dynamic linear system modeling project
 
-Для запуска требуется интерпретатор Python версии 3.6 и выше, а также пакеты, указанные в файле: *requirements.txt*
+Python interpreter version 3.6 and or higher and packages from *requirements.txt*
 
-### Как работать:
-1. В файле *input.txt* ввести вектора воздействий и количество шагов моделирования
-2. Запустить *model.py* 
+### Instruction to run:
+1. Install packages: 
+    ```bash
+     pip install -r requirements.txt
+    ``` 
+2. Enter initial conditions and numbers of simulation steps in *input.txt*
+
+3. Run model:
+    ```bash
+    python model.py
+    ``` 

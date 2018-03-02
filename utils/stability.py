@@ -1,9 +1,10 @@
 import numpy as np
 
-def stability(A):
-    eA = np.linalg.eigvals(A)
 
-    for a in eA:
+def stability(input_a):
+    eigval_a = np.linalg.eigvals(input_a)
+
+    for a in eigval_a:
         if abs(a) < 1:
             continue
         elif abs(a) == 1:
