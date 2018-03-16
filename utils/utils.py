@@ -66,19 +66,19 @@ def build_model(path):
 
 
 def calculate_model(a, b, c, d, e, f, x, u, n, y, t):
-    X_history = []
-    Y_history = []
+    x_history = []
+    y_history = []
 
     for i in range(int(t[0])):
         print(f'Iteration #{i + 1}:')
         y = np.matmul(c, x) + np.matmul(d, u) + np.matmul(f, n)
-        Y_history.append(y[0])
+        y_history.append(y[0])
         x = np.matmul(a, x) + np.matmul(b, u) + np.matmul(e, n)
-        X_history.append(x[0])
+        x_history.append(x[0])
         n = np.random.normal(size=(len(n), 1))
         print(f' X = {x.transpose()}\n', f'Y = {y.transpose()}')
 
-    plt.plot(X_history, Y_history)
+    plt.plot(x_history, y_history)
     plt.show()
 
 
@@ -94,3 +94,27 @@ def stability(input_a):
             stable = False
             return 'System is unstable'
     return 'System is stable'
+
+
+def quality(a, b, c, d, u, x):
+    """calculating quality indicators: transient time, overshoot, static error"""
+    y_history = []
+    t = [i for i in range(201)]
+    u = np.ones(shape=u.shape, dtype=float)
+    x = np.zeros(shape=x.shape, dtype=float)
+    y_history.append(0)
+    for i in range(200):
+        print(f'Iteration #{i + 1}:')
+        y = np.matmul(c, x) + np.matmul(d, u)
+        y_history.append(y[0])
+        x = np.matmul(a, x) + np.matmul(b, u)
+        print(f' X = {x.transpose()}\n', f'Y = {y.transpose()}')
+    plt.plot(t, y_history)
+    plt.show()
+
+if __name__ == '__main__':
+    path = '../input.txt'
+
+    A, B, C, D, E, F, X, U, N, Y, T = build_model(path)
+    quality(A, B, C, D, U, X)
+

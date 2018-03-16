@@ -1,9 +1,11 @@
-from utils import get_data, stability
+from utils import utils
 
 path = 'input.txt'
 
-A, B, C, D, E, F, X, U, N, Y, T = get_data.build_model(path)
+A, B, C, D, E, F, X, U, N, Y, T = utils.build_model(path)
 
-print(stability.stability(A))
+print(utils.stability(A))
 
-get_data.calculate_model(A, B, C, D, E, F, X, U, N, Y, T)
+utils.calculate_model(A, B, C, D, E, F, X, U, N, Y, T)
+
+utils.quality(A, B, C, D, U, X)
