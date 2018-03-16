@@ -1,12 +1,11 @@
 import re
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 
 def open_file(path):
     """downloading data"""
-    file = open('input.txt', 'r')
+    file = open(path, 'r')
     input_data = file.read()
     file.close()
     return input_data
@@ -69,7 +68,6 @@ def build_model(path):
 def calculate_model(a, b, c, d, e, f, x, u, n, y, t):
     X_history = []
     Y_history = []
-
 
     for i in range(int(t[0])):
         print(f'Iteration #{i + 1}:')
