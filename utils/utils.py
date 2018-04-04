@@ -73,14 +73,15 @@ def calculate_model(a, b, c, d, e, f, x, u, n, y, t):
     for i in range(int(t[0])):
         print(f'Iteration #{i + 1}:')
         y = np.matmul(c, x) + np.matmul(d, u) + np.matmul(f, n)
-        y_history.append(y[0])
+        y_history.append(y[0][0])
         x = np.matmul(a, x) + np.matmul(b, u) + np.matmul(e, n)
-        x_history.append(x[0])
+        x_history.append(x[0][0])
         n = np.random.normal(size=(len(n), 1))
         print(f' X = {x.transpose()}\n', f'Y = {y.transpose()}')
 
     plt.plot(x_history, y_history)
     plt.show()
+    return x_history, y_history
 
 
 def stability(input_a):
@@ -125,8 +126,36 @@ def quality(a, b, c, d, u, x):
     print(termcolor.colored(f'Settled value: {round(settled_value, 4)}', 'red'))
 
 
+def median_filter(signal, kernel_size = 3):
+    """simple filter for x and y signals"""
+    cleaned_signal = [0 for _ in signal]
+    buffer = [0 for _ in range(kernel_size)]
+    center = round(kernel_size / 2) - 1
+    for idx, x in enumerate(signal):
+        if idx == 0:
+            buffer = [signal[idx] for _ in buffer]
+            for i, j in enumerate(buffer[center:]):
+                buffer[i + 1] = signal[idx + i]
+            print(center)
+        elif idx == len(signal) - 1:
+            buffer = [signal[idx] for _ in buffer]
+            for i, j in enumerate(buffer[:center + 1]):
+                buffer[i + 1] = signal[idx - 3 + i]
+        else:
+            buffer = [signal[idx] for _ in buffer]
+            for i, j in enumerate(buffer):
+                buffer[i + 1] = signal[idx + i]
+        buffer.sort()
+        median = buffer[center]
+        cleaned_signal[idx] = median
+
+    return cleaned_signal
+
+
 if __name__ == '__main__':
     path = '../input.txt'
 
     A, B, C, D, E, F, X, U, N, Y, T = build_model(path)
-    quality(A, B, C, D, U, X)
+    x_history, y_history = calculate_model(A, B, C, D, E, F, X, U, N, Y, T)
+    print(y_history)
+    print(median_filter(y_history))
