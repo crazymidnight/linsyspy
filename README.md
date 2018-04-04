@@ -16,5 +16,5 @@ Python interpreter version 3.6 or higher and packages from *requirements.txt* ar
     ``` 
 ### TODO list:
 - [X] Estimation of stability - algebraic methods
-- [ ] Quality indicators: transient time, overshoot, static error
+- [X] Quality indicators: transient time, overshoot, static error
 - [ ] Noise filter in X and Y
