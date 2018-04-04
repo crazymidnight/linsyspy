@@ -1,6 +1,7 @@
 import re
 import matplotlib.pyplot as plt
 import numpy as np
+import termcolor
 
 
 def open_file(path):
@@ -103,14 +104,22 @@ def quality(a, b, c, d, u, x):
     u = np.ones(shape=u.shape, dtype=float)
     x = np.zeros(shape=x.shape, dtype=float)
     y_history.append(0)
+    transient_time = None
     for i in range(200):
         print(f'Iteration #{i + 1}:')
         y = np.matmul(c, x) + np.matmul(d, u)
         y_history.append(y[0])
         x = np.matmul(a, x) + np.matmul(b, u)
         print(f' X = {x.transpose()}\n', f'Y = {y.transpose()}')
+    for idx, i in enumerate(y_history):
+        if np.abs(i) > 0.95 * np.abs(y_history[199]) and np.abs(i) < 1.05 * np.abs(y_history[199]):
+            transient_time = idx + 1
+            break
+    overshoot = (np.max(np.abs(y_history)) - np.abs(y_history[199])) / np.abs(y_history[199]) * 100
     plt.plot(t, y_history)
     plt.show()
+    print(termcolor.colored(f'Overshutting: {round(overshoot[0], 2)}%', 'green'))
+    print(termcolor.colored(f'Transient time: {transient_time} s', 'green'))
 
 if __name__ == '__main__':
     path = '../input.txt'
