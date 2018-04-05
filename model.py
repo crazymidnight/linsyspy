@@ -9,3 +9,5 @@ print(utils.stability(A))
 utils.calculate_model(A, B, C, D, E, F, X, U, N, Y, T)
 
 utils.quality(A, B, C, D, U, X)
+
+utils.median_filter(X)  
