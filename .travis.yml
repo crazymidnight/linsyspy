@@ -1,5 +1,5 @@
 {
-  "language": "python",
+  "language": "python3",
   "os": "linux",
   "group": "stable",
   "dist": "trusty"
