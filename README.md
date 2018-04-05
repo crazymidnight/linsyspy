@@ -1,4 +1,4 @@
-# linsyspy ![contributions welcome](https://img.shields.io/badge/Laboratory-awesome-brightgreen.svg?style=flat)
+# linsyspy ![contributions welcome](https://img.shields.io/badge/Laboratory-awesome-brightgreen.svg?style=flat) [![Build Status](https://travis-ci.org/crazymidnight/linsyspy.svg?branch=master)](https://travis-ci.org/crazymidnight/linsyspy)
 ### Dynamic linear system modeling project
 Python interpreter version 3.6 or higher and packages from *requirements.txt* are required.
  
