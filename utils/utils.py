@@ -57,7 +57,7 @@ def build_model(path):
     return a, b, c, d, e, f, x, u, n, y, t
 
 
-def calculate_model(a, b, c, d, e, f, x, u, n, y, t):
+def calculate_model(a, b, c, d, e, f, x, u, n, y, t, non_stationary=False):
     x_history = []
     y_history = []
     for i in range(int(t[0])):
@@ -66,14 +66,23 @@ def calculate_model(a, b, c, d, e, f, x, u, n, y, t):
         y_history.append(y[0][0])
         x = np.matmul(a, x) + np.matmul(b, u) + np.matmul(e, n)
         x_history.append(x[0][0])
-        n = np.random.normal(size=(len(n), 1))
+        n = np.random.normal(size=(len(n), 1), scale=np.sqrt(1))
         # print(f' X = {x.transpose()}\n', f'Y = {y.transpose()}')
+        if non_stationary:
+            np.seed = np.random.randint(0, 108)
+            a = np.random.uniform(low=-0.5, high=0.5, size=(len(x), len(x)))
+            b = np.random.uniform(low=-0.5, high=0.5, size=(len(x), len(u)))
+            c = np.random.uniform(low=-0.5, high=0.5, size=(len(y), len(x)))
+            d = np.random.uniform(low=-0.5, high=0.5, size=(len(y), len(u)))
+            e = np.random.uniform(low=-0.5, high=0.5, size=(len(x), len(n)))
+            f = np.random.uniform(low=-0.5, high=0.5, size=(len(y), len(n)))
     plt.plot(x_history, y_history)
     plt.show()
     return x_history, y_history
 
 
 def stability(input_a):
+    """estimating system stability"""
     eigval_a = np.linalg.eigvals(input_a)
     for a in eigval_a:
         if abs(a) < 1:
@@ -85,30 +94,47 @@ def stability(input_a):
     return 'System is stable'
 
 
-def quality(a, b, c, d, u, x):
+def quality(a, b, c, d, u, x, n, non_stationary=False):
     """calculating quality indicators: transient time, overshoot, static error"""
     y_history = []
-    t = [i for i in range(201)]
+    t = [i for i in range(51)]
     u = np.ones(shape=u.shape, dtype=float)
     x = np.zeros(shape=x.shape, dtype=float)
     y_history.append(0)
     transient_time = None
     settled_value = None
-    for i in range(200):
+    for i in range(50):
         # print(f'Iteration #{i + 1}:')
         y = np.matmul(c, x) + np.matmul(d, u)
         y_history.append(y[0])
         x = np.matmul(a, x) + np.matmul(b, u)
         # print(f' X = {x.transpose()}\n', f'Y = {y.transpose()}')
-    settled_value = np.mean(y_history[190:199])
+        if non_stationary:
+            np.seed = np.random.randint(0, 108)
+            a = np.random.uniform(low=-0.5, high=0.5, size=(len(x), len(x)))
+            b = np.random.uniform(low=-0.5, high=0.5, size=(len(x), len(u)))
+            c = np.random.uniform(low=-0.5, high=0.5, size=(len(y), len(x)))
+            d = np.random.uniform(low=-0.5, high=0.5, size=(len(y), len(u)))
+            e = np.random.uniform(low=-0.5, high=0.5, size=(len(x), len(n)))
+            f = np.random.uniform(low=-0.5, high=0.5, size=(len(y), len(n)))
+    settled_value = np.mean(y_history[50:51])
+    cleaned_y = median_filter(y_history)
+    a = 0
     for idx, i in enumerate(y_history):
         if np.abs(i) > 0.95 * np.abs(settled_value) and np.abs(i) < 1.05 * np.abs(settled_value):
             transient_time = idx + 1
-            break
+            a += 1
+            if a > 5:
+                break
     overshoot = (np.max(np.abs(y_history)) - np.abs(settled_value)) / np.abs(settled_value) * 100
+    overshoot_cleaned = (np.max(np.abs(cleaned_y)) - np.abs(settled_value)) / np.abs(settled_value) * 100
+    plt.figure()
     plt.plot(t, y_history)
+    plt.figure(1)
+    plt.plot(t, cleaned_y)
     plt.show()
     print(termcolor.colored(f'Overshutting: {round(overshoot, 2)}%', 'green'))
+    print(termcolor.colored(f'Overshutting with filter: {round(overshoot_cleaned, 2)}%', 'green'))
     print(termcolor.colored(f'Transient time: {transient_time} s', 'yellow'))
     print(termcolor.colored(f'Settled value: {round(settled_value, 4)}', 'red'))
 
